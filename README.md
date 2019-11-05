@@ -8,9 +8,12 @@ All the functions are defined in the first cell of the notebook. If someone want
 ```python
 def unit_step(n)
 def impulse(n)
-def const(n,a)
+def const(a)
 def zero(n)
 def power_signal(gamma)
+def sinc(arg)
+def dirichlet(N,arg)
+def rect(duty_cycle=0.5, amp=1, period=2, count=1, dc_offset=0, t_offset=0)
 def gen_signal(start, end, signal=zero, bk=[])
 def convolve(x1,x2)
 ```
@@ -24,6 +27,10 @@ Named function that returns a lambda function, that in turn returns `a` for all 
 Named function that returns the zero signal, i.e. zero for all `n`. Equivalent to `const(n,0)` and `z[n] = 0`.
 ###### Power Signal
 Named function that returns a lambda (anonymous) function of `n`. Note that this is similar to how `const` works. The lambda function returns the input `gamma` to the power n, i.e. `power_signal(2)(n) = 2**n`. Equivalent to `p[n] = gamma^n`.
+###### Sinc
+Returns a lambda function that evaluates the sinc function `sin(arg*n)/(arg*n)` in discrete-time.
+###### Dirichlet
+Returns a lambda function that evaluates the Dirichlet function `sin(N*arg*x)/(N*sin(arg*x))` in discrete-time.
 ###### Gen Signal
 This is the workhorse of this signals workbook. `gen_signal` returns a list containing a lambda function at index 0 and a tuple at index 1. Rather than tying the begin and end indices `n` (taking `n` in the mathematical sense, where `n` can range from negative infinity to positive infinity) via parameters in convolve, DTFT, graph_signal, and print_signal, the begin and end indices are recorded in the tuple. The default lambda function is the zero signal, but start and end must be specified parameters. All following functions expect the output of `gen_signal` as their input. Note that while both `signal` and `bk` can be specified, it is recommended that you only use one or the other for clarity of code.
 Usage is as follows:
@@ -38,7 +45,7 @@ This takes two signals (the output of gen_signal) and returns a discrete-time co
 
 ##### Other Functions
 ```python
-def DTFT(signal, num_pts)
+def DTFT(signal, num_pts=100)
 def change_range(signal, new_start, new_end)
 def graph_signal(signal)
 def print_signal(signal)
